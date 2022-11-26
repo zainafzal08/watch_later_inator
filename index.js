@@ -7,10 +7,11 @@ async function start() {
 		'scope': 'https://www.googleapis.com/auth/youtube',
 	});
     const r = await gapi.client.youtube.channels.list({
-        "part": ["id"],
+        "part": ["contentDetails"],
         "mine": true
       });
     console.log(r);
+
 };
 
 gapi.load('client', start);
