@@ -1,0 +1,22 @@
+{
+  "name": "Watch Later Inator",
+  "short_name": "Watch Later Inator",
+  "description": "Share target to add a youtube video to your watch later list.",
+  "icons": [
+    {
+      "src": "logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "start_url": "/",
+  "background_color": "#202125",
+  "display": "standalone",
+  "theme_color": "#C8CAD0"
+}

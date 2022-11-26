@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Watch Later Inator</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<link rel="shortcut icon" type="image/svg+xml" href="./favicon.svg" />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+	<style>
+		body {
+			margin: 0;
+			width: 100vw;
+			height: 100vh;
+			box-sizing: border-box;
+			font-family: 'Raleway', sans-serif;
+			background: #202125;
+			padding: 20px 40px;
+		}
+		h1 {
+			color: #C8CAD0;
+		}
+		li, p {
+			color: #5F626D;
+			padding: 0;
+			margin: 0;
+			font-size: .8rem;
+		}
+		li svg {
+			width: 1rem;
+			fill: #5F626D;
+		}
+		ol {
+			padding-left: 2rem;
+			margin: .5rem;
+		}
+		li {
+			padding: .2rem 0;
+		}
+		a {
+			color: #C8CAD0;
+		}
+	</style>
+</head>
+
+<body>
+	<h1> Welcome </h1>
+	<p> For me to do my thing you'll need to: </p>
+	<ol>
+		<li>
+			Install this PWA by click on the <svg viewBox="0 0 24 24">
+				<path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" />
+			</svg> icon in the top right, then the
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+				<path d="M13 46q-1.2 0-2.1-.9-.9-.9-.9-2.1V5q0-1.2.9-2.1.9-.9 2.1-.9h16v3H13v1.5h16v3H13v29h22V32h3v11q0 1.2-.9 2.1-.9.9-2.1.9Zm0-4.5V43h22v-1.5Zm23.7-14.2L27.4 18l2.1-2.1 5.7 5.65V6.5h3v15.05l5.7-5.65L46 18ZM13 6.5V5Zm0 35V43Z"/>
+			</svg> install option. </li>
+		<li> <a href="http://google.com">Authorize</a> me with google so i'm allowed to add things to your watch later queue :)</li>
+	</ol>
+	<script src="https://apis.google.com/js/api.js"></script>
+	<script src="index.js"></script>
+</body>
+
+</html>
