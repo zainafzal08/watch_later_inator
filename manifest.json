@@ -18,5 +18,12 @@
   "start_url": "/",
   "background_color": "#202125",
   "display": "standalone",
-  "theme_color": "#C8CAD0"
+  "theme_color": "#C8CAD0",
+  "share_target": {
+    "action": "/add",
+    "method": "GET",
+    "params": {
+      "url": "add"
+    }
+  }
 }

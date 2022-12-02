@@ -1,17 +1,168 @@
-async function start() {
-	await gapi.client.init({
-		'apiKey': 'AIzaSyBzYj-oMJJLIyXBs0g5SmbJtP-KlZ6sPxE',
-		'discoveryDocs': ['https://youtube.googleapis.com/$discovery/rest'],
-		// clientId and scope are optional if auth is not required.
-		'clientId': '428583190973-iifjdvdvvond48kvs9d2c6ot7cbp6pb8.apps.googleusercontent.com',
-		'scope': 'https://www.googleapis.com/auth/youtube',
-	});
-    const r = await gapi.client.youtube.channels.list({
-        "part": ["contentDetails"],
-        "mine": true
-      });
-    console.log(r);
+let oauthClient;
 
+const SINK_PLAYLIST_NAME = 'Watch Later Inator';
+
+function setPage(id) {
+  for (const e of document.querySelectorAll(`[data-page]`)) {
+    e.style.removeProperty('display');
+  }
+  document.querySelector(`[data-page="${id}"]`).style.display = 'flex';
+}
+
+async function getSinkPlaylist() {
+  let sinkPlaylist = localStorage.getItem('sink-playlist');
+
+  if (!sinkPlaylist) {
+    const r = await gapi.client.youtube.playlists.list({
+      "part": ["id", "snippet"],
+      "mine": true
+    });
+
+    let found = false;
+    for (const item of r.result.items) {
+      if (item.snippet.localized.title === SINK_PLAYLIST_NAME) {
+        sinkPlaylist = item.id;
+        console.log(item);
+        localStorage.setItem('sink-playlist', sinkPlaylist);
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      const r = await gapi.client.youtube.playlists.insert({
+        "part": [
+          "snippet,status"
+        ],
+        "resource": {
+          "snippet": {
+            "title": SINK_PLAYLIST_NAME,
+            "description": "Auto-created playlist for watch later inator, do not edit the name.",
+            "tags": [],
+            "defaultLanguage": "en"
+          },
+          "status": {
+            "privacyStatus": "private"
+          }
+        }
+      });
+      sinkPlaylist = r.id;
+      localStorage.setItem('sink-playlist', sinkPlaylist);
+    }
+  }
+
+  return sinkPlaylist;
+}
+
+function getIdFromLink(link) {
+  const id = (new URL(link)).searchParams.get('v');
+  if (!id) {
+    throw new Error('Invalid Link.');
+  }
+  return id;
+}
+
+async function getTargetInformation(link) {
+  const id = getIdFromLink(link);
+  const r = await gapi.client.youtube.videos.list({
+    "part": [
+      "snippet"
+    ],
+    "id": [ id ]
+  });
+
+  if (r.result.items.length < 1) {
+    throw new Error('Invalid Link.');
+  }
+
+  const video = r.result.items[0];
+  return {
+    title: video.snippet.title,
+    thumbnail: video.snippet.thumbnails.standard
+  };
+}
+
+async function renderTargetPreview(link) {
+  const t = await getTargetInformation(link);
+  document.querySelector('#preview-thumbnail').style.backgroundImage = `url(${t.thumbnail.url})`;
+  document.querySelector('#preview-title').innerText = t.title;
+}
+
+async function sendToYoutube(sinkId, link) {
+
+  await gapi.client.youtube.playlistItems.insert({
+    part: ["snippet"],
+    resource: {
+      snippet: {
+        playlistId: sinkId,
+        resourceId: {
+          kind: "youtube#video",
+          videoId: getIdFromLink(link)
+        }
+      }
+    }
+  });
+}
+
+function setUpAuth() {
+  const authenticatedPromise = new Promise(resolve => {
+    oauthClient = google.accounts.oauth2.initTokenClient({
+      client_id: "428583190973-iifjdvdvvond48kvs9d2c6ot7cbp6pb8.apps.googleusercontent.com",
+      scope: "https://www.googleapis.com/auth/youtube",
+      prompt: '',
+      callback: resolve
+    });
+  });
+  return authenticatedPromise;
 };
 
-gapi.load('client', start);
+async function getGapi() {
+  await new Promise(r => gapi.load('client', r));
+  await gapi.client.setApiKey("AIzaSyBzYj-oMJJLIyXBs0g5SmbJtP-KlZ6sPxE");
+  await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+}
+
+const registerServiceWorker = async (src) => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register(src, {
+        scope: ".",
+      });
+      if (registration.installing) {
+        console.log("Service worker installing");
+      } else if (registration.waiting) {
+        console.log("Service worker installed");
+      } else if (registration.active) {
+        console.log("Service worker active");
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
+async function init() {
+  registerServiceWorker("./service-worker.js");
+  const url = new URL(location.href);
+  if (url.searchParams.has('add')) {
+    setPage('pending');
+
+    const authenticatedPromise = setUpAuth();
+    document.querySelector('#auth-button').addEventListener('click', () => {
+      oauthClient.requestAccessToken();
+    });
+    await getGapi();
+    await renderTargetPreview(url.searchParams.get('add'));
+    setPage('auth_wait');
+
+    await authenticatedPromise;
+    setPage('pending');
+    const sinkId = await getSinkPlaylist();
+    await sendToYoutube(sinkId, url.searchParams.get('add'));
+    setPage('done');
+  } else {
+    setPage('setup');
+  }
+}
+
+init();

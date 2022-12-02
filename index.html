@@ -19,23 +19,27 @@
 			font-family: 'Raleway', sans-serif;
 			background: #202125;
 			padding: 20px 40px;
+			--preview-width: 400px;
+			overflow: hidden;
 		}
 		h1 {
 			color: #C8CAD0;
+			font-size: 2.2rem;
 		}
 		li, p {
 			color: #5F626D;
 			padding: 0;
 			margin: 0;
-			font-size: .8rem;
+			font-size: 1rem;
 		}
 		li svg {
 			width: 1rem;
 			fill: #5F626D;
 		}
 		ol {
-			padding-left: 2rem;
+			padding-left: 0;
 			margin: .5rem;
+			margin-top: 1rem;
 		}
 		li {
 			padding: .2rem 0;
@@ -43,24 +47,80 @@
 		a {
 			color: #C8CAD0;
 		}
+		[data-page] {
+			display: none;
+		}
+		section {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+		button {
+			padding: .5rem 1rem;
+			font-weight: bold;
+			cursor: pointer;
+			color: #C8CAD0;
+			border-radius: 8px;
+			border: 2px solid #C8CAD0;
+			font-size: 1rem;
+			font-family: 'Raleway', sans-serif;
+			background: none;
+		}
+		#preview-thumbnail {
+			width: 80%;
+			aspect-ratio: 4/3;
+			border-radius: 8px;
+			margin-bottom: 2rem;
+			background-position: center;
+    		background-size: cover;
+		}
+		#preview-title {
+			width: 80%;
+			font-size: 1.5rem;
+			text-align: center;
+			margin-bottom: 4rem;
+			color: #C8CAD0;
+		}
+		#share-graphic {
+			position: absolute;
+    		bottom: -40px;
+		}
 	</style>
 </head>
 
 <body>
-	<h1> Welcome </h1>
-	<p> For me to do my thing you'll need to: </p>
-	<ol>
-		<li>
-			Install this PWA by click on the <svg viewBox="0 0 24 24">
-				<path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" />
-			</svg> icon in the top right, then the
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-				<path d="M13 46q-1.2 0-2.1-.9-.9-.9-.9-2.1V5q0-1.2.9-2.1.9-.9 2.1-.9h16v3H13v1.5h16v3H13v29h22V32h3v11q0 1.2-.9 2.1-.9.9-2.1.9Zm0-4.5V43h22v-1.5Zm23.7-14.2L27.4 18l2.1-2.1 5.7 5.65V6.5h3v15.05l5.7-5.65L46 18ZM13 6.5V5Zm0 35V43Z"/>
-			</svg> install option. </li>
-		<li> <a href="http://google.com">Authorize</a> me with google so i'm allowed to add things to your watch later queue :)</li>
-	</ol>
+	<section data-page="setup">
+		<h1> Welcome </h1>
+		<p> I'm watch later inator and i'm a simple app that lets you quickly add youtube links people send you to a playlist for you to watch later. To use me: </p>
+		<ol>
+			<li>
+				Install this PWA by click on the <svg viewBox="0 0 24 24">
+					<path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" />
+				</svg> icon in the top right, then the
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+					<path d="M13 46q-1.2 0-2.1-.9-.9-.9-.9-2.1V5q0-1.2.9-2.1.9-.9 2.1-.9h16v3H13v1.5h16v3H13v29h22V32h3v11q0 1.2-.9 2.1-.9.9-2.1.9Zm0-4.5V43h22v-1.5Zm23.7-14.2L27.4 18l2.1-2.1 5.7 5.65V6.5h3v15.05l5.7-5.65L46 18ZM13 6.5V5Zm0 35V43Z"/>
+				</svg> install option. </li>
+			<li> Share links with me using your phones share sheet!  </li>
+		</ol>
+		<img id="share-graphic" src="share.png"/>
+	</section>
+	<section data-page="auth_wait">
+		<div id="preview-thumbnail"></div>
+		<p id="preview-title"></p>
+		<button id="auth-button">Confirm</button>
+	</section>
+	<section data-page="pending">
+		<h1> Connecting... </h1>
+	</section>
+	<section data-page="done">
+		<h1> Done :) Have a nice day! </h1>
+	</section>
+	<script src="https://accounts.google.com/gsi/client"></script>
 	<script src="https://apis.google.com/js/api.js"></script>
-	<script src="index.js"></script>
+	<script src="/index.js"></script>
 </body>
 
 </html>
