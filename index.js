@@ -144,10 +144,10 @@ const registerServiceWorker = async (src) => {
 function getLinkToAdd() {
   const url = new URL(location.href);
   if (url.searchParams.has('add')) {
-    return url.searchParams.get('add');
+    return decodeURI(url.searchParams.get('add'));
   }
   if (url.searchParams.has('add_fallback')) {
-    return url.searchParams.get('add_fallback');
+    return decodeURI(url.searchParams.get('add_fallback'));
   }
   return null;
 }
