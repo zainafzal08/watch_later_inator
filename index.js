@@ -141,10 +141,21 @@ const registerServiceWorker = async (src) => {
   }
 };
 
-async function init() {
-  registerServiceWorker("./service-worker.js");
+function getLinkToAdd() {
   const url = new URL(location.href);
   if (url.searchParams.has('add')) {
+    return url.searchParams.get('add');
+  }
+  if (url.searchParams.has('add_fallback')) {
+    return url.searchParams.get('add_fallback');
+  }
+  return null;
+}
+
+async function init() {
+  registerServiceWorker("./service-worker.js");
+  const target = getLinkToAdd();
+  if (target) {
     setPage('pending');
 
     const authenticatedPromise = setUpAuth();
@@ -152,13 +163,13 @@ async function init() {
       oauthClient.requestAccessToken();
     });
     await getGapi();
-    await renderTargetPreview(url.searchParams.get('add'));
+    await renderTargetPreview(target);
     setPage('auth_wait');
 
     await authenticatedPromise;
     setPage('pending');
     const sinkId = await getSinkPlaylist();
-    await sendToYoutube(sinkId, url.searchParams.get('add'));
+    await sendToYoutube(sinkId, target);
     setPage('done');
   } else {
     setPage('setup');

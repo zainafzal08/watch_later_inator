@@ -23,7 +23,8 @@
     "action": "./",
     "method": "GET",
     "params": {
-      "url": "add"
+      "url": "add",
+      "text": "add_fallback"
     }
   }
 }
