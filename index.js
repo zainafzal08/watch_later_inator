@@ -55,7 +55,12 @@ async function getSinkPlaylist() {
 }
 
 function getIdFromLink(link) {
-  const id = (new URL(link)).searchParams.get('v');
+  const url = new URL(link);
+  if (url.host.toLocaleLowerCase() === 'youtu.be') {
+    return url.pathname.substring(1);
+  }
+
+  const id = url.searchParams.get('v');
   if (!id) {
     throw new Error('Invalid Link.');
   }
