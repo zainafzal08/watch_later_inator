@@ -15,12 +15,12 @@
     }
   ],
   "orientation": "portrait",
-  "start_url": "/",
+  "start_url": "/watch_later_inator",
   "background_color": "#202125",
   "display": "standalone",
   "theme_color": "#C8CAD0",
   "share_target": {
-    "action": "/",
+    "action": "/watch_later_inator/",
     "method": "GET",
     "params": {
       "url": "add"

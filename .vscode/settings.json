@@ -7,4 +7,13 @@
       "front_matter_title": ""
     }
   },
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext",
+    "json"
+  ],
 }
