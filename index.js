@@ -67,6 +67,12 @@ function getIdFromLink(link) {
   return id;
 }
 
+function getThumbnail(snippet) {
+  if (snippet.thumbnails.standard) return snippet.thumbnails.standard;
+  if (snippet.thumbnails.default) return snippet.thumbnails.default;
+  return snippet.thumbnails[Object.keys(snippet.thumbnails)[0]];
+}
+
 async function getTargetInformation(link) {
   const id = getIdFromLink(link);
   const r = await gapi.client.youtube.videos.list({
@@ -83,7 +89,7 @@ async function getTargetInformation(link) {
   const video = r.result.items[0];
   return {
     title: video.snippet.title,
-    thumbnail: video.snippet.thumbnails.standard
+    thumbnail: getThumbnail(video.snippet)
   };
 }
 
