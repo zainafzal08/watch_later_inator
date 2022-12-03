@@ -20,7 +20,7 @@
   "display": "standalone",
   "theme_color": "#C8CAD0",
   "share_target": {
-    "action": "/add",
+    "action": "/",
     "method": "GET",
     "params": {
       "url": "add"
