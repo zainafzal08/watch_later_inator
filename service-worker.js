@@ -1,6 +1,6 @@
 async function cacheStaticAssets() {
   const cache = await caches.open("static_assets");
-  return cache.addAll(["/index.html", "/favicon.svg", "/index.js"]);
+  return cache.addAll(["index.html", "favicon.svg", "index.js"]);
 }
 
 async function matchCache(request) {
