@@ -26,5 +26,10 @@
       "url": "add",
       "text": "add_fallback"
     }
-  }
+  },
+  "scope_extensions": [
+    {"origin": "*.youtube.com"},
+    {"origin": "youtube.com"},
+    {"origin": "youtu.be"}
+  ]
 }
