@@ -31,5 +31,8 @@
     {"origin": "*.youtube.com"},
     {"origin": "youtube.com"},
     {"origin": "youtu.be"}
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-new"
+  }
 }

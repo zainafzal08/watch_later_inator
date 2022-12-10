@@ -165,6 +165,12 @@ function getLinkToAdd() {
 
 async function init() {
   registerServiceWorker("./service-worker.js");
+
+  launchQueue.setConsumer(launchParams => {
+    // Gets called whenver the PWA is launched to handle a intent.
+    console.log(launchParams.targetURL);
+  });
+
   const target = getLinkToAdd();
   if (target) {
     setPage('pending');
